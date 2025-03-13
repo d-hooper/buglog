@@ -6,6 +6,10 @@ class BugsService {
     const bugs = await dbContext.Bugs.find().populate('creator')
     return bugs
   }
+  async getBugbyId(bugId) {
+    const bug = await dbContext.Bugs.findById(bugId).populate('creator')
+    return bug
+  }
 
   async createBug(bugData) {
     const bug = (await dbContext.Bugs.create(bugData)).populate('creator')
