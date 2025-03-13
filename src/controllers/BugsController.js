@@ -12,6 +12,7 @@ export class BugsController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .put('/:bugId', this.updateBug)
       .post('', this.createBug)
+      .delete('/:bugId', this.deleteBug)
 
   }
 
@@ -33,6 +34,25 @@ export class BugsController extends BaseController {
       next(error)
     }
   }
+
+  /**
+ * Creates a new value from request body and returns the value
+ * @param {import("express").Request} request
+ * @param {import("express").Response} response
+ * @param {import("express").NextFunction} next
+ */
+  async deleteBug(request, response, next) {
+    try {
+      const bugId = request.params.bugId
+      const userInfo = request.userInfo
+
+      const message = await bugsService.deleteBug(bugId, userInfo)
+      response.send(message)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   /**
  * Creates a new value from request body and returns the value
  * @param {import("express").Request} request
