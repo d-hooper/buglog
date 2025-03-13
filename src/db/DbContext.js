@@ -5,7 +5,7 @@ import { BugSchema } from '../models/Bug.js';
 class DbContext {
   Account = mongoose.model('Account', AccountSchema);
 
-  Bug = mongoose.model('Bug', BugSchema);
+  Bugs = mongoose.model('Bug', BugSchema);
 
 }
 
