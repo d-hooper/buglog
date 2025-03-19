@@ -3,8 +3,8 @@ import { Schema } from "mongoose";
 export const NotesSchema = new Schema({
 
   body: { type: String, minLength: 5, maxLength: 500, required: true },
-  bugID: { type: Schema.ObjectId, required: true, ref: 'Bug' },
-  creatorID: { type: Schema.ObjectId, required: true, ref: 'Account' },
+  bugId: { type: Schema.ObjectId, required: true, ref: 'Bug' },
+  creatorId: { type: Schema.ObjectId, required: true, ref: 'Account' },
 },
   {
     timestamps: true,
