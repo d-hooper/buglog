@@ -12,8 +12,6 @@ export class NotesController extends BaseController {
       .delete('/:noteId', this.deleteNote)
   }
 
-
-
   /**
  * Creates a new value from request body and returns the value
  * @param {import("express").Request} request
