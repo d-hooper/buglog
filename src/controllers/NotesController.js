@@ -28,4 +28,20 @@ export class NotesController extends BaseController {
       next(error)
     }
   }
+
+  /**
+   * Creates a new value from request body and returns the value
+   * @param {import("express").Request} request
+   * @param {import("express").Response} response
+   * @param {import("express").NextFunction} next
+   */
+  async getNotesByBugId(request, response, next) {
+    try {
+      const bugId = request.params.bugId
+      const bug = await notesService.getNotesByBugId(bugId)
+      response.send(bug)
+    } catch (error) {
+      next(error)
+    }
+  }
 }

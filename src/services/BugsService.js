@@ -8,7 +8,7 @@ class BugsService {
     return bugs
   }
 
-  async getBugbyId(bugId) {
+  async getBugById(bugId) {
 
     const bug = await dbContext.Bugs.findById(bugId).populate('creator')
 
@@ -19,8 +19,14 @@ class BugsService {
     return bug
   }
 
+
+  async createBug(bugData) {
+    const bug = (await dbContext.Bugs.create(bugData)).populate('creator')
+    return bug
+  }
+
   async updateBug(bugId, userId, bugData) {
-    const bug = await this.getBugbyId(bugId)
+    const bug = await this.getBugById(bugId)
 
     if (bug.creatorId != userId) {
       throw new Forbidden("Can not update bugs created by other users!");
@@ -35,7 +41,7 @@ class BugsService {
   }
 
   async deleteBug(bugId, userInfo) {
-    const bug = await this.getBugbyId(bugId)
+    const bug = await this.getBugById(bugId)
 
     if (bug.creatorId != userInfo.id) {
       throw new Forbidden("Can not delete bugs created by other users!");
@@ -46,10 +52,6 @@ class BugsService {
     return `${bug.title} was successfully deleted.`
   }
 
-  async createBug(bugData) {
-    const bug = (await dbContext.Bugs.create(bugData)).populate('creator')
-    return bug
-  }
 
 }
 
