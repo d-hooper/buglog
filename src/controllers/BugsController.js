@@ -2,6 +2,7 @@ import { Auth0Provider } from "@bcwdev/auth0provider";
 import { bugsService } from "../services/BugsService.js";
 import BaseController from "../utils/BaseController.js";
 import { notesService } from "../services/NotesService.js";
+import { trackedBugsService } from "../services/TrackedBugsService.js";
 
 export class BugsController extends BaseController {
 
@@ -11,6 +12,7 @@ export class BugsController extends BaseController {
       .get('', this.getAllBugs)
       .get('/:bugId', this.getBugById)
       .get('/:bugId/notes', this.getNotesByBugId)
+      .get('/:bugId/trackedbugs', this.getTrackedBugsByBugId)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .put('/:bugId', this.updateBug)
       .post('', this.createBug)
@@ -60,6 +62,22 @@ export class BugsController extends BaseController {
     try {
       const bugId = request.params.bugId
       const bug = await notesService.getNotesByBugId(bugId)
+      response.send(bug)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  /**
+ * Creates a new value from request body and returns the value
+ * @param {import("express").Request} request
+ * @param {import("express").Response} response
+ * @param {import("express").NextFunction} next
+ */
+  async getTrackedBugsByBugId(request, response, next) {
+    try {
+      const bugId = request.params.bugId
+      const bug = await trackedBugsService.getTrackedBugsByBugId(bugId)
       response.send(bug)
     } catch (error) {
       next(error)
