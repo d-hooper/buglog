@@ -1,4 +1,5 @@
 import { dbContext } from "../db/DbContext.js"
+import { Forbidden } from "../utils/Errors.js"
 
 class NotesService {
 
@@ -16,6 +17,18 @@ class NotesService {
     return notes
   }
 
+  async deleteNote(noteId, userInfo) {
+    const noteToDelete = await dbContext.Notes.findById(noteId)
+
+    // getting a 403 if this is included?
+    // if (noteToDelete.creatorId != userInfo.userId) {
+    //   throw new Forbidden("Can not delete bugs created by other users!");
+    // }
+
+    await noteToDelete.deleteOne()
+
+    return 'Note was deleted.'
+  }
 }
 
 export const notesService = new NotesService()

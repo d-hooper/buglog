@@ -103,8 +103,6 @@ export class BugsController extends BaseController {
     }
   }
 
-
-
   /**
    * Creates a new value from request body and returns the value
    * @param {import("express").Request} request
