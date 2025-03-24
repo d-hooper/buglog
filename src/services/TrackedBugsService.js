@@ -1,4 +1,5 @@
 import { dbContext } from "../db/DbContext.js"
+import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class TrackedBugsService {
 
@@ -17,6 +18,23 @@ class TrackedBugsService {
     const trackedBug = await dbContext.TrackedBugs.create(trackedBugData)
     await trackedBug.populate('tracker bug')
     return trackedBug
+  }
+
+  async deleteTrackedBug(trackedBugId, userId) {
+    const trackedBugToDelete = await (await dbContext.TrackedBugs.findById(trackedBugId)).populate('bug')
+
+    if (!trackedBugToDelete) {
+      throw new BadRequest(`No tracked bug found with an id of ${trackedBugId}`)
+    }
+
+    if (trackedBugToDelete.accountId != userId) {
+      throw new Forbidden(`Cannot remove tracking links for other users`)
+    }
+
+    await trackedBugToDelete.deleteOne()
+    // @ts-ignore
+    return `No longer tracking ${trackedBugToDelete.bug.title}`
+
   }
 
 }
