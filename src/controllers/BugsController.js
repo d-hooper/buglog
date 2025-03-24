@@ -12,7 +12,7 @@ export class BugsController extends BaseController {
       .get('', this.getAllBugs)
       .get('/:bugId', this.getBugById)
       .get('/:bugId/notes', this.getNotesByBugId)
-      .get('/:bugId/trackedbugs', this.getTrackedBugsByBugId)
+      .get('/:bugId/trackedbugs', this.getUsersTrackingByBugId)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .put('/:bugId', this.updateBug)
       .post('', this.createBug)
@@ -74,10 +74,10 @@ export class BugsController extends BaseController {
  * @param {import("express").Response} response
  * @param {import("express").NextFunction} next
  */
-  async getTrackedBugsByBugId(request, response, next) {
+  async getUsersTrackingByBugId(request, response, next) {
     try {
       const bugId = request.params.bugId
-      const bug = await trackedBugsService.getTrackedBugsByBugId(bugId)
+      const bug = await trackedBugsService.getUsersTrackingByBugId(bugId)
       response.send(bug)
     } catch (error) {
       next(error)
